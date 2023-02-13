@@ -15,7 +15,7 @@ $(document).on("submit", "#register_hospital", function(e) {
         processData: false,
         success: function (response) {
           if(!response){
-            $("#error").text("Error occured try after some time").show().delay(5000).fadeOut();
+            $("#error").text("Account already exists, Try login").show().delay(5000).fadeOut();
           }else{
             $(location).attr('href', "<?= base_url(); ?>login_hospital");
           }

@@ -3,14 +3,23 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class HomeModel extends CI_Model
 {
+    
+    public function role_exists($table, $check){
+        $this->db->where($check);
+        $q = $this->db->get($table);
+        if($q->num_rows() > 0){
+            return True;
+        }
+        return False;
+    }
+    
     public function registerHospital($data){
         $this->db->insert('registered_hospitals_bbs',$data);
         $id = $this->db->insert_id();
 
-        
         if($id){
             $data = array("id"=>$id);
-            $this->db->insert('available_blood_group_bbs',$data);
+            $this->db->insert('available_blood_wgroup_bbs',$data);
             return True;
         }
         return False;

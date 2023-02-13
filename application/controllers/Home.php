@@ -67,9 +67,10 @@ class Home extends CI_Controller
             redirect(base_url()."login_hospital", "refresh");
         }
 
-        $data['login'] = $this->session->userdata('type');
-        $data['name'] = $this->session->userdata('name');     
+        $data['login'] = $this->session->userdata('type');     
         $data['states'] = $this->HomeModel->states();
+        $data['name'] = $this->session->userdata('name');     
+
         $this->load->view('Layout/Upper');
         $this->load->view('Layout/hospitalNav', $data);
         $this->load->view("home");
@@ -85,7 +86,7 @@ class Home extends CI_Controller
         }
         $data["blood_avlbl"] = $this->HomeModel->fetch_blood_info_hospital($this->session->userdata('id'));
         $data['name'] = $this->session->userdata('name');     
-        
+
         $this->load->view('Layout/Upper');
         $this->load->view('Layout/hospitalNav', $data);
         $this->load->view("hospital/AddBloodInfo");
@@ -101,6 +102,7 @@ class Home extends CI_Controller
         $id = $this->session->userdata("id");
         $data["data"] = $this->HomeModel->view_requests($id);
         $data['name'] = $this->session->userdata('name');     
+
 
         $this->load->view('Layout/Upper');
         $this->load->view('Layout/hospitalNav', $data);
@@ -159,7 +161,11 @@ class Home extends CI_Controller
         $city = $this->input->post("select_city");
         $local_address = $this->input->post("local_address");
         $password = $this->input->post("password");
-
+        
+        if($this->HomeModel->role_exists("registered_hospitals_bbs", array("email" => $email))){
+            return False;
+        }
+        
         $data = array("name"=>$hospital_name, "email"=>$email, "password"=>$password, "state"=>$state, "city"=>$city, "local_address"=>$local_address);
         echo $this->HomeModel->registerHospital($data);
     }
@@ -226,6 +232,10 @@ class Home extends CI_Controller
         $contact = $this->input->post("contact");
         $password = $this->input->post("password");
 
+        if($this->HomeModel->role_exists("registered_receivers_bbs", array("email" => $email))){
+            return False;
+        }
+        
         $data = array("name"=>$username, "email"=>$email, "contact"=>$contact, "password"=>$password);
         echo $this->HomeModel->registerReceiver($data);
     }
