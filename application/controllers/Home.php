@@ -67,11 +67,12 @@ class Home extends CI_Controller
             redirect(base_url()."login_hospital", "refresh");
         }
 
-        $data['login'] = $this->session->userdata('type');     
+        $data['login'] = $this->session->userdata('type');
+        $data['name'] = $this->session->userdata('name');     
         $data['states'] = $this->HomeModel->states();
         $this->load->view('Layout/Upper');
-        $this->load->view('Layout/hospitalNav');
-        $this->load->view("home", $data);
+        $this->load->view('Layout/hospitalNav', $data);
+        $this->load->view("home");
         include("AjaxReq/script.php");
         include("AjaxReq/bloodAvailable_Fetch.php");
         include("AjaxReq/fetchingCity.php");
@@ -83,9 +84,11 @@ class Home extends CI_Controller
             redirect(base_url()."login_hospital", "refresh");
         }
         $data["blood_avlbl"] = $this->HomeModel->fetch_blood_info_hospital($this->session->userdata('id'));
+        $data['name'] = $this->session->userdata('name');     
+        
         $this->load->view('Layout/Upper');
-        $this->load->view('Layout/hospitalNav');
-        $this->load->view("hospital/AddBloodInfo", $data);
+        $this->load->view('Layout/hospitalNav', $data);
+        $this->load->view("hospital/AddBloodInfo");
         include("AjaxReq/script.php");
         include("AjaxReq/blood_InfoHospital.php");
         $this->load->view('Layout/Bottom');
@@ -97,10 +100,11 @@ class Home extends CI_Controller
         }
         $id = $this->session->userdata("id");
         $data["data"] = $this->HomeModel->view_requests($id);
+        $data['name'] = $this->session->userdata('name');     
 
         $this->load->view('Layout/Upper');
-        $this->load->view('Layout/hospitalNav');
-        $this->load->view("hospital/viewRequests", $data);
+        $this->load->view('Layout/hospitalNav', $data);
+        $this->load->view("hospital/viewRequests");
         $this->load->view('Layout/Bottom');
     }
 
